@@ -1,0 +1,6 @@
+I had to change the way the matrx to be used for alignment is initialized
+So while initializing the matrix, I had to fill the first row and first columns with zeros
+
+Also while filling the matrix, I had to change the value of the cell which was coming out to be a negative value to 0
+
+While forming the alignment, I had to start from the cell which has the maximum value and then backtrackt until I reach 0 or the usual base case(indices are <0)
