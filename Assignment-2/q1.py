@@ -5,3 +5,59 @@ beta_dict = {'M': 1.67, 'V': 1.65, 'I': 1.60, 'C': 1.30, 'Y': 1.29, 'F': 1.28, '
 
 protein_seq = "SGFRKMAFPSGKVEGCMVQVTCGTTTLNGLWLDDTVYCPRHVICTAEDMLNPNYEDLLIRKSNHSFLVQAGNVQLRVIGHSMQNCLLRLKVDTSNPKTPKYKFVRIQPGQTFSVLACYNGSPSGVYQCAMRPNHTIKGSFLNGSCGSVGF"
 
+helix=[]
+strand=[]
+
+lst=[]
+
+lst.append(0)
+lst.append(1)
+lst.append(6)
+
+for i in range(len(protein_seq)):
+    helix.append("#")
+    strand.append("#")
+
+
+i=0
+
+while(i<len(protein_seq)-5):
+    #Counting Favourable residues
+    num_fav=lst[0]
+    for j in range(lst[2]):
+        residue=protein_seq[i+j]
+        if(alpha_dict[residue]>=1):
+            num_fav+=lst[1]
+
+    #
+
+    if(num_fav>=4):
+        for j in range(lst[2]):
+            helix[i+j]="H"
+
+        #Now we do extensions
+
+        k=i
+        while(k>=0):
+            score=0
+            for j in range(0,4):
+                residue=alpha_dict[k-j]
+                score+=alpha_dict[residue]
+
+            if(score>=4):
+                for j in range(0,4):
+                    helix[k-j]="H"
+                k-=1
+            else:
+                break
+
+
+
+
+
+
+
+
+
+
+

@@ -48,7 +48,7 @@ opt2=[]
 
 def findAllOptAlign(seq1, seq2, i, j, newSeq1, newSeq2, currScore, arr):
 
-    if(currScore==maxScore and (i==0 and j==0) or (i<0 or j<0)):
+    if(currScore==maxScore and ((i==0 and j==0) or (i<0 or j<0))):
         opt1.append(newSeq1)
         opt2.append(newSeq2)
         return
