@@ -49,6 +49,9 @@ def findAllOptAlign(seq1, seq2, i, j, newSeq1, newSeq2, currScore, arr):
         opt2.append(newSeq2)
         return
 
+    if(arr[i][j]==0):
+        return
+
     if((i==0 and j==0) or (i<0 or j<0)):
         return
     

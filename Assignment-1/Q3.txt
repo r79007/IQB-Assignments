@@ -1,6 +1,6 @@
 I had to change the way the matrix to be used for alignment is initialized
 So while initializing the matrix, I had to fill the first row and first columns with zeros
 
-Also while filling the matrix, I had to change the value of the cell which was coming out to be a negative value to 0
+Also while filling the matrix, I had to change the value of the cell which was coming out to be a negative value to 0, as the matrix for local alignment cannot have negative values
 
-While forming the alignment, I had to start from the cell which has the maximum value and then backtrack until I reach 0 or the usual base case(indices are <0) or current score = the maximum score
+While forming the alignment, I had to start from the cell which has the maximum value and then backtrack until I reach 0(if current score=max score then i add the sequence to the result otherwise i just return from there) or the usual base case(indices are <0) or current score = the maximum score(in this case i add the sequence to the result)
