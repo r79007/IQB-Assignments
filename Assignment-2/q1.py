@@ -8,6 +8,8 @@ protein_seq = "SGFRKMAFPSGKVEGCMVQVTCGTTTLNGLWLDDTVYCPRHVICTAEDMLNPNYEDLLIRKSNHS
 helix=[]
 strand=[]
 
+result=[]
+
 lst=[]
 
 lst.append(0)
@@ -17,10 +19,11 @@ lst.append(6)
 for i in range(len(protein_seq)):
     helix.append("#")
     strand.append("#")
+    result.append("#")
 
+#For helix
 
 i=0
-
 while(i<len(protein_seq)-5):
     #Counting Favourable residues
     num_fav=lst[0]
@@ -37,11 +40,11 @@ while(i<len(protein_seq)-5):
 
         #Now we do extensions
 
-        k=i
-        while(k>=0):
+        k=i+3
+        while(k-3>=0):
             score=0
             for j in range(0,4):
-                residue=alpha_dict[k-j]
+                residue=protein_seq[k-j]
                 score+=alpha_dict[residue]
 
             if(score>=4):
@@ -50,6 +53,138 @@ while(i<len(protein_seq)-5):
                 k-=1
             else:
                 break
+
+        k = i+2
+        while (k+4 <= len(protein_seq)):
+            score = 0
+            for j in range(0, 4):
+                residue = protein_seq[k + j]
+                score += alpha_dict[residue]
+
+            if (score >= 4):
+                for j in range(0, 4):
+                    helix[k + j] = "H"
+                k += 1
+            else:
+                break
+
+    i+=1
+
+
+
+
+#For strand
+
+i=0
+
+while(i<len(protein_seq)-4):
+
+    # Counting Favourable residues
+    num_fav = lst[0]
+    for j in range(lst[2]-1):
+        residue = protein_seq[i + j]
+        if (beta_dict[residue] >= 1):
+            num_fav += lst[1]
+
+    #
+
+    if (num_fav >= 3):
+        for j in range(lst[2]-1):
+            strand[i + j] = "S"
+
+        # Now we do extensions
+
+        k = i + 2
+        while (k - 3 >= 0):
+            score = 0
+            for j in range(0, 4):
+                residue = protein_seq[k - j]
+                score += beta_dict[residue]
+
+            if (score > 4):
+                for j in range(0, 4):
+                    strand[k - j] = "S"
+                k -= 1
+            else:
+                break
+
+        k = i + 2
+        while (k + 4 <= len(protein_seq)):
+            score = 0
+            for j in range(0, 4):
+                residue = protein_seq[k + j]
+                score += beta_dict[residue]
+
+            if (score > 4):
+                for j in range(0, 4):
+                    strand[k + j] = "S"
+                k += 1
+            else:
+                break
+
+    i+=1
+
+i=0
+
+
+
+while(i<len(protein_seq)):
+
+    idx=0
+
+    if(helix[i]=='#' and strand[i]=='#'):
+        result[i]='T'
+        i+=1
+
+    elif(helix[i]=='H' and strand[i]=='#'):
+        result[i]='H'
+        i+=1
+
+    elif(helix[i]=='#' and strand[i]=='S'):
+        result[i]='S'
+        i+=1
+
+    else:
+
+        while(idx+i<len(protein_seq)):
+            if(helix[i+idx]=='H' and strand[i+idx]=='S'):
+                idx+=1
+            else:
+                break
+
+        hel_score = 0
+        strand_score = 0
+
+        for j in range(0, idx):
+            residue_alpha=protein_seq[i+j]
+            residue_beta = protein_seq[i + j]
+            hel_score+=alpha_dict[residue_alpha]
+            strand_score+=beta_dict[residue_beta]
+
+        if(strand_score>hel_score):
+            for j in range(0, idx):
+                result[i+j]='S'
+        else:
+            for j in range(0, idx):
+                result[i + j] = 'H'
+
+        i+=idx
+
+print(''.join(result))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
