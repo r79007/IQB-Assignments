@@ -170,7 +170,79 @@ while(i<len(protein_seq)):
 
         i+=idx
 
-print(''.join(result))
+server_result="TTTT     HHHHHH EEEEEETTEEEEEEEETTEEEEEGGGG  HHHHH   HHHHHHH  GGG EEEETTEEE EEEEEEETTEEEEEE   TTTT        TTTEEEEEEEEETTEEEEEEEEEETTTT B    TTTTTTTEE "
+result=''.join(result)
+print(protein_seq)
+print(result)
+print(server_result)
+
+print()
+
+print("Differing Regions(The first string represents the server result, and the second string represents my result): ")
+print("Here the gaps in the server result have been substituted by C, because the gaps actually mean coils")
+
+idx=0
+
+change = False
+
+diff_server_result=""
+diff_result=""
+
+while(idx<len(protein_seq)):
+    i = idx
+    change = False
+    while(i<len(protein_seq) and (server_result[i]!=result[i])):
+        if(not(server_result[i]=="E" and result[i]=="S")):
+
+            if(result[i]==" "):
+                diff_result+="C"
+            else:
+                diff_result += result[i]
+            if(server_result[i]==" "):
+                diff_server_result+="C"
+            else:
+                diff_server_result += server_result[i]
+
+
+
+
+            # print(server_result[i], end="")
+            # print(result[i], end="")
+            change=True
+            i+=1
+
+
+        else:
+            break
+
+
+
+
+    if(change==True):
+
+        print()
+
+        print("Indices: ", idx, " to ", i - 1)
+
+        print()
+
+        print(diff_server_result[idx-1:i])
+        print(diff_result[idx-1:i])
+
+
+
+        idx=i
+    else:
+        idx += 1
+        diff_result+=" "
+        diff_server_result+=" "
+
+# print(diff_server_result)
+# print(diff_result)
+
+
+
+
 
 
 
