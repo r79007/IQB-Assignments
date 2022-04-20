@@ -3,6 +3,10 @@ beta_dict = {'M': 1.67, 'V': 1.65, 'I': 1.60, 'C': 1.30, 'Y': 1.29, 'F': 1.28, '
 
 protein_seq = "SGFRKMAFPSGKVEGCMVQVTCGTTTLNGLWLDDTVYCPRHVICTAEDMLNPNYEDLLIRKSNHSFLVQAGNVQLRVIGHSMQNCLLRLKVDTSNPKTPKYKFVRIQPGQTFSVLACYNGSPSGVYQCAMRPNHTIKGSFLNGSCGSVGF"
 
+#Helix list represents the sites predicted as part of Helix
+#Strand list represents the sites predicted as part of Strand
+#Result list will contain our final answer
+
 helix=[]
 strand=[]
 
@@ -144,9 +148,9 @@ i=0
 while(i<len(protein_seq)):
 
     idx=0
-    #If our method could not predict whether it could be a strand or a helix, we take that to be a turn denoted by T
+    #If our method could not predict whether it could be a strand or a helix, we take that to be a blank(i.e #)
     if(helix[i]=='#' and strand[i]=='#'):
-        result[i]='T'
+        result[i]='#'
         i+=1
     #If it is predicted as Helix but not as Strand then it could be a helix
     elif(helix[i]=='H' and strand[i]=='#'):
@@ -197,7 +201,7 @@ print(server_result)
 
 print()
 print("Differing Regions(The first string represents the server result, and the second string represents my result): ")
-print("Here the gaps in the server result have been substituted by C, because the gaps actually mean coils")
+print("Here the gaps in the server result have been substituted by #, they can be coils")
 
 idx=0
 
@@ -213,11 +217,11 @@ while(idx<len(protein_seq)):
         if(not(server_result[i]=="E" and result[i]=="S")):
 
             if(result[i]==" "):
-                diff_result+="C"
+                diff_result+="#"
             else:
                 diff_result += result[i]
             if(server_result[i]==" "):
-                diff_server_result+="C"
+                diff_server_result+="#"
             else:
                 diff_server_result += server_result[i]
 
