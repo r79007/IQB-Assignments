@@ -263,8 +263,8 @@ while(idx<len(protein_seq)):
 
         print()
 
-        print(diff_server_result[idx-1:i])
-        print(diff_result[idx-1:i])
+        print(diff_server_result[idx:i])
+        print(diff_result[idx:i])
 
 
 
