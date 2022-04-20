@@ -14,6 +14,14 @@ result=[]
 
 lst=[]
 
+#lst and common_arr store the common numbers that will be used(but could not implement it in a useful way, so there is no real use of it)
+common_arr=[]
+
+common_arr.append(2)
+common_arr.append(3)
+common_arr.append(4)
+common_arr.append(5)
+
 lst.append(0)
 lst.append(1)
 lst.append(6)
@@ -27,7 +35,8 @@ for i in range(len(protein_seq)):
 
 i=0
 #"We check all possible stretches of length 6
-while(i<len(protein_seq)-5):
+end_idx=len(protein_seq)-5
+while(i<end_idx):
     #Counting Favourable residues in these stretches
     num_fav=lst[0]
     #Checking in stretches of size 6
@@ -39,39 +48,44 @@ while(i<len(protein_seq)-5):
 
     #If then number of favourable residues is >=4 then this site can have a helix
 
-    if(num_fav>=4):
+    if(num_fav>=common_arr[2]):
         for j in range(lst[2]):
             helix[i+j]="H"
 
         #Now we do extensions
 
         #We first try to extend in stretches of 4 to the right
-        k=i+3
-        while(k-3>=0):
+        k=i+common_arr[1]
+        while(k>=3):
             score=0
             for j in range(0,4):
-                residue=protein_seq[k-j]
+                site_idx = k - j
+                residue=protein_seq[site_idx]
                 score+=alpha_dict[residue]
             #If the current right stretch has sum of the P(H) of the residues >=4 then this can be a helix
-            if(score>=4):
+            if(score>=common_arr[2]):
                 for j in range(0,4):
-                    helix[k-j]="H"
+                    site_idx = k - j
+                    helix[site_idx]="H"
                 k-=1
 
             #If not then we break
             else:
                 break
         #Now we try to extend in stretches of 4 to the left
-        k = i+2
-        while (k+4 <= len(protein_seq)):
+        k = i+common_arr[0]
+        end_i=len(protein_seq) - 4
+        while (k <= end_i):
             score = 0
             for j in range(0, 4):
-                residue = protein_seq[k + j]
+                site_idx=k+j
+                residue = protein_seq[site_idx]
                 score += alpha_dict[residue]
             # If the current right stretch has sum of the P(H) of the residues >=4 then this can be a helix
-            if (score >= 4):
+            if (score >= common_arr[2]):
                 for j in range(0, 4):
-                    helix[k + j] = "H"
+                    site_idx = k + j
+                    helix[site_idx] = "H"
                 k += 1
             #Else we break
             else:
@@ -87,8 +101,8 @@ while(i<len(protein_seq)-5):
 i=0
 
 #We check all possible stretches of length 5
-
-while(i<len(protein_seq)-4):
+end_idx=len(protein_seq)-4
+while(i<end_idx):
 
     # Counting Favourable residues in these stretches
     num_fav = lst[0]
@@ -108,33 +122,38 @@ while(i<len(protein_seq)-4):
         # Now we do extensions
 
         # We first try to extend in stretches of 3 to the right
-        k = i + 2
-        while (k - 3 >= 0):
+        st_idx = i + common_arr[0]
+        while (st_idx >= 3):
             score = 0
             for j in range(0, 4):
-                residue = protein_seq[k - j]
+                site_idx=st_idx - j
+                residue = protein_seq[site_idx]
                 score += beta_dict[residue]
-            # If sum of P(S) of the residues in this stretch is > 4 then this site can be a strand
-            if (score > 4):
+            # If sum of P(S) of the residues in this stretch is >= 4 then this site can be a strand
+            if (score >= common_arr[2]):
                 for j in range(0, 4):
-                    strand[k - j] = "S"
-                k -= 1
+                    site_idx=st_idx - j
+                    strand[site_idx] = "S"
+                st_idx -= 1
             #Else we break from working on this stretch
             else:
                 break
 
         # Now we try to extend in stretches of 3 to the left
-        k = i + 2
-        while (k + 4 <= len(protein_seq)):
+        st_idx = i + common_arr[0]
+        end_i=len(protein_seq) - common_arr[2]
+        while (st_idx  <= end_i):
             score = 0
             for j in range(0, 4):
-                residue = protein_seq[k + j]
+                site_idx=st_idx + j
+                residue = protein_seq[site_idx]
                 score += beta_dict[residue]
-            # If sum of P(S) of the residues in this stretch is > 4 then this site can be a strand
-            if (score > 4):
+            # If sum of P(S) of the residues in this stretch is >= 4 then this site can be a strand
+            if (score >= common_arr[2]):
                 for j in range(0, 4):
-                    strand[k + j] = "S"
-                k += 1
+                    site_idx=st_idx + j
+                    strand[site_idx] = "S"
+                st_idx += 1
             # Else we break from working on this stretch
             else:
                 break
@@ -179,7 +198,7 @@ while(i<len(protein_seq)):
             residue_beta = protein_seq[i + j]
             hel_score+=alpha_dict[residue_alpha]
             strand_score+=beta_dict[residue_beta]
-        #If strand has highes score then it has more probability to be correct
+        #If strand has higher score then it has more probability to be correct
         if(strand_score>hel_score):
             for j in range(0, idx):
                 result[i+j]='S'
@@ -209,7 +228,7 @@ change = False
 
 diff_server_result=""
 diff_result=""
-
+#To print the differing regions
 while(idx<len(protein_seq)):
     i = idx
     change = False
@@ -226,10 +245,6 @@ while(idx<len(protein_seq)):
                 diff_server_result += server_result[i]
 
 
-
-
-            # print(server_result[i], end="")
-            # print(result[i], end="")
             change=True
             i+=1
 
